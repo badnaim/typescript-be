@@ -15,15 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const movie_model_1 = __importDefault(require("../model/movie-model"));
 require("../config/mongoose-config");
-const mongodb_1 = require("mongodb");
 const movieRouter = express_1.default.Router();
 movieRouter.get(`/movie/:id`, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const reqId = (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id;
     console.log("id", reqId);
     try {
-        const ID = { _id: new mongodb_1.ObjectId(reqId) };
-        const movie = (yield movie_model_1.default.find(ID));
+        const movie = (yield movie_model_1.default.find({ _id: reqId }));
         console.log("movie", movie);
         if (movie) {
             res.status(200).send(movie);
@@ -35,11 +33,13 @@ movieRouter.get(`/movie/:id`, (req, res) => __awaiter(void 0, void 0, void 0, fu
 }));
 movieRouter.get("/movies", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("movies get huselt orj irle");
-    const getTheater = yield movie_model_1.default
+    const getMovies = yield movie_model_1.default
         .find({ poster: { $exists: true } })
         .limit(8);
-    if (getTheater) {
-        res.status(200).json(getTheater);
+    // let limit: number = Number(req.query.limit);
+    // const getMovies: any = await movieSch(limit)
+    if (getMovies) {
+        res.status(200).json(getMovies);
     }
     else {
         res.send(400).send({ message: "error in movie router" });

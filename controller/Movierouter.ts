@@ -2,18 +2,16 @@ import express, { Request, Response } from "express";
 import movieSch from "../model/movie-model";
 import mongoose from "mongoose";
 import "../config/mongoose-config";
-import { ObjectId } from "mongodb"
 
 const movieRouter = express.Router();
 
 
 movieRouter.get(`/movie/:id`, async (req: Request, res: Response) => {
-  const reqId = req?.params?.id;
+  const reqId: string = req?.params?.id;
   console.log("id", reqId);
 
   try {
-    const ID = {_id: new ObjectId(reqId)}
-    const movie = (await movieSch.find(ID));
+    const movie = (await movieSch.find({_id: reqId}));
     console.log("movie", movie);
     if(movie) {
       res.status(200).send(movie)
@@ -25,11 +23,16 @@ movieRouter.get(`/movie/:id`, async (req: Request, res: Response) => {
 
 movieRouter.get("/movies", async (req, res) => {
   console.log("movies get huselt orj irle");
-  const getTheater = await movieSch
+  
+  const getMovies = await movieSch
     .find({ poster: { $exists: true } })
     .limit(8);
-  if (getTheater) {
-    res.status(200).json(getTheater);
+
+  // let limit: number = Number(req.query.limit);
+  // const getMovies: any = await movieSch(limit)
+
+  if (getMovies) {
+    res.status(200).json(getMovies);
   } else {
     res.send(400).send({ message: "error in movie router" });
   }
