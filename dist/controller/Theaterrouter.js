@@ -14,16 +14,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const theater_model_1 = __importDefault(require("../model/theater-model"));
+require("../config/mongoose-config");
 const theaterRouter = express_1.default.Router();
 theaterRouter.get("/theater", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("get theather requested");
     const getTheater = yield theater_model_1.default.findOne();
     res.status(200).send(getTheater);
-    // try {
-    //   res.send({ status: "ok", body: getTheater });
-    //   console.log(getTheater);
-    // } catch (error) {
-    //   console.log(error, "movieRouter error");
-    // }
+    try {
+        res.send({ status: "ok", body: getTheater });
+        console.log(getTheater);
+    }
+    catch (error) {
+        console.log(error, "movieRouter error");
+    }
 }));
 exports.default = theaterRouter;

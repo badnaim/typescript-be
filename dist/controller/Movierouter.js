@@ -14,15 +14,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const movie_model_1 = __importDefault(require("../model/movie-model"));
+require("../config/mongoose-config");
 const movieRouter = express_1.default.Router();
 movieRouter.get("/movies", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("movies get huselt orj irle");
-    const getTheater = yield movie_model_1.default.findOne({});
+    const getTheater = yield movie_model_1.default
+        .find({ poster: { $exists: true } })
+        .limit(8);
     if (getTheater) {
         res.status(200).json(getTheater);
     }
     else {
         res.send(400).send({ message: "error in movie router" });
     }
+}));
+movieRouter.get(`/movie/:id`, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("id", req.params.id);
+    const movie = yield movie_model_1.default.findOne({ _id: req.params.id }).limit(1);
+    // if (movie) {
+    //   return res.status(200).json(movie);
+    // } else {
+    //   return res.send(400).send({ message: "error" });
+    // }
+    console.log("movie", movie);
+    return res.status(200).send(movie);
 }));
 exports.default = movieRouter;
