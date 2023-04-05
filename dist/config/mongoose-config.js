@@ -9,7 +9,7 @@ dotenv_1.default.config();
 mongoose_1.default
     .connect(`${process.env.MONGODB_SECRET}`)
     .then(() => {
-    return console.log("connected");
+    return console.log("mongodb connected");
 })
     .catch((err) => {
     console.log(err, "mongoose-config aldaa");

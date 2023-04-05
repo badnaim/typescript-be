@@ -15,7 +15,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const movie_model_1 = __importDefault(require("../model/movie-model"));
 require("../config/mongoose-config");
+const mongodb_1 = require("mongodb");
 const movieRouter = express_1.default.Router();
+movieRouter.get(`/movie/:id`, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const reqId = (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id;
+    console.log("id", reqId);
+    try {
+        const ID = { _id: new mongodb_1.ObjectId(reqId) };
+        const movie = (yield movie_model_1.default.find(ID));
+        console.log("movie", movie);
+        if (movie) {
+            res.status(200).send(movie);
+        }
+    }
+    catch (error) {
+        res.status(404).send(`error ${reqId}`);
+    }
+}));
 movieRouter.get("/movies", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("movies get huselt orj irle");
     const getTheater = yield movie_model_1.default
@@ -27,16 +44,5 @@ movieRouter.get("/movies", (req, res) => __awaiter(void 0, void 0, void 0, funct
     else {
         res.send(400).send({ message: "error in movie router" });
     }
-}));
-movieRouter.get(`/movie/:id`, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("id", req.params.id);
-    const movie = yield movie_model_1.default.findOne({ _id: req.params.id }).limit(1);
-    // if (movie) {
-    //   return res.status(200).json(movie);
-    // } else {
-    //   return res.send(400).send({ message: "error" });
-    // }
-    console.log("movie", movie);
-    return res.status(200).send(movie);
 }));
 exports.default = movieRouter;
