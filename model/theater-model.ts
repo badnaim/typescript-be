@@ -14,6 +14,9 @@ const theaterSchema: Schema = new Schema({
       coordinates: [Number],
     },
   },
+},
+{
+  collection: "theaters"
 });
 
 const TheaterSch = mongoose.model("theater", theaterSchema, "theaters");

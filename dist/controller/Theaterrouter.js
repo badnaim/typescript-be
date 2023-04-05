@@ -13,16 +13,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const movie_model_1 = __importDefault(require("../model/movie-model"));
-const movieRouter = express_1.default.Router();
-movieRouter.get("/movies", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("movies get huselt orj irle");
-    const getTheater = yield movie_model_1.default.findOne({});
-    if (getTheater) {
-        res.status(200).json(getTheater);
-    }
-    else {
-        res.send(400).send({ message: "error in movie router" });
-    }
+const theater_model_1 = __importDefault(require("../model/theater-model"));
+const theaterRouter = express_1.default.Router();
+theaterRouter.get("/theater", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("get theather requested");
+    const getTheater = yield theater_model_1.default.findOne();
+    res.status(200).send(getTheater);
+    // try {
+    //   res.send({ status: "ok", body: getTheater });
+    //   console.log(getTheater);
+    // } catch (error) {
+    //   console.log(error, "movieRouter error");
+    // }
 }));
-exports.default = movieRouter;
+exports.default = theaterRouter;

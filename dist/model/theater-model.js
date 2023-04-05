@@ -22,18 +22,24 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
-const dotenv = __importStar(require("dotenv"));
-dotenv.config();
-const db = mongoose_1.default
-    .connect(`mongodb+srv://batnyam17:batnyam17@cluster0.gfvhelw.mongodb.net/sample_mflix`)
-    .then(() => {
-    return console.log("connected");
-}).catch((err) => {
-    console.log(err, "mongoose-config aldaa");
+const mongoose_1 = __importStar(require("mongoose"));
+const theaterSchema = new mongoose_1.Schema({
+    theaterId: Number,
+    location: {
+        address: {
+            street1: String,
+            city: String,
+            state: String,
+            zipcode: String,
+        },
+        geo: {
+            type: String,
+            coordinates: [Number],
+        },
+    },
+}, {
+    collection: "theaters"
 });
-exports.default = db;
+const TheaterSch = mongoose_1.default.model("theater", theaterSchema, "theaters");
+exports.default = TheaterSch;
