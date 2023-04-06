@@ -21,7 +21,7 @@ movieRouter.get(`/movie/:id`, (req, res) => __awaiter(void 0, void 0, void 0, fu
     const reqId = (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id;
     console.log("id", reqId);
     try {
-        const movie = (yield movie_model_1.default.find({ _id: reqId }));
+        const movie = yield movie_model_1.default.find({ _id: reqId });
         console.log("movie", movie);
         if (movie) {
             res.status(200).send(movie);
@@ -32,12 +32,11 @@ movieRouter.get(`/movie/:id`, (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 }));
 movieRouter.get("/movies", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("movies get huselt orj irle");
+    let limit = Number(req.query.limit) | 4;
+    console.log(limit);
     const getMovies = yield movie_model_1.default
         .find({ poster: { $exists: true } })
-        .limit(8);
-    // let limit: number = Number(req.query.limit);
-    // const getMovies: any = await movieSch(limit)
+        .limit(limit);
     if (getMovies) {
         res.status(200).json(getMovies);
     }

@@ -5,31 +5,28 @@ import "../config/mongoose-config";
 
 const movieRouter = express.Router();
 
-
 movieRouter.get(`/movie/:id`, async (req: Request, res: Response) => {
   const reqId: string = req?.params?.id;
   console.log("id", reqId);
 
   try {
-    const movie = (await movieSch.find({_id: reqId}));
+    const movie = await movieSch.find({ _id: reqId });
     console.log("movie", movie);
-    if(movie) {
-      res.status(200).send(movie)
+    if (movie) {
+      res.status(200).send(movie);
     }
-  } catch(error) {
-    res.status(404).send(`error ${reqId}`)
+  } catch (error) {
+    res.status(404).send(`error ${reqId}`);
   }
 });
 
 movieRouter.get("/movies", async (req, res) => {
-  console.log("movies get huselt orj irle");
-  
+  let limit: number = Number(req.query.limit) | 4;
+  console.log(limit);
+
   const getMovies = await movieSch
     .find({ poster: { $exists: true } })
-    .limit(8);
-
-  // let limit: number = Number(req.query.limit);
-  // const getMovies: any = await movieSch(limit)
+    .limit(limit);
 
   if (getMovies) {
     res.status(200).json(getMovies);
@@ -37,6 +34,5 @@ movieRouter.get("/movies", async (req, res) => {
     res.send(400).send({ message: "error in movie router" });
   }
 });
-
 
 export default movieRouter;
