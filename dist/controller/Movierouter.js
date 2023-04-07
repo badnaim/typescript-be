@@ -32,7 +32,7 @@ movieRouter.get(`/movie/:id`, (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 }));
 movieRouter.get("/movies", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let limit = Number(req.query.limit) | 4;
+    let limit = Number(req.query.limit);
     console.log(limit);
     const getMovies = yield movie_model_1.default
         .find({ poster: { $exists: true } })

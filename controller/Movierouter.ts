@@ -21,7 +21,7 @@ movieRouter.get(`/movie/:id`, async (req: Request, res: Response) => {
 });
 
 movieRouter.get("/movies", async (req, res) => {
-  let limit: number = Number(req.query.limit) | 4;
+  let limit: number = Number(req.query.limit);
   console.log(limit);
 
   const getMovies = await movieSch

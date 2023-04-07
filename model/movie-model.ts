@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const movieSchema = new mongoose.Schema(
   {
+    _id: String,
     plot: String,
     countries: [String],
     year: Number,
