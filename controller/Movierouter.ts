@@ -35,4 +35,17 @@ movieRouter.get("/movies", async (req, res) => {
   }
 });
 
+movieRouter.get("/movies-id", async (req: Request, res: Response): Promise<void> => {
+  console.log('static path generate');
+
+  try {
+    const movie = await movieSch.find({}).limit(10).select({
+      _id: 1,
+    });
+    res.status(200).send(movie);
+  } catch (error) {
+    console.log(error, "in movie router")
+  }
+})
+
 export default movieRouter;

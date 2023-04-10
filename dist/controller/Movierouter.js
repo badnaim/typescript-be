@@ -44,4 +44,16 @@ movieRouter.get("/movies", (req, res) => __awaiter(void 0, void 0, void 0, funct
         res.send(400).send({ message: "error in movie router" });
     }
 }));
+movieRouter.get("/movies-id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('static path generate');
+    try {
+        const movie = yield movie_model_1.default.find({}).limit(10).select({
+            _id: 1,
+        });
+        res.status(200).send(movie);
+    }
+    catch (error) {
+        console.log(error, "in movie router");
+    }
+}));
 exports.default = movieRouter;
