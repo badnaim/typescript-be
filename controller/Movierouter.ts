@@ -7,14 +7,12 @@ const movieRouter = express.Router();
 
 movieRouter.get(`/movie/:id`, async (req: Request, res: Response) => {
   const reqId: string = req?.params?.id;
-  console.log("id", reqId);
+  console.log("reqId", reqId);
 
   try {
-    const movie = await movieSch.find({ _id: reqId });
-    console.log("movie", movie);
-    if (movie) {
-      res.status(200).send(movie);
-    }
+    const findedMovie = await movieSch.findOne({ _id: reqId });
+    console.log(findedMovie);
+    res.status(200).send(findedMovie);
   } catch (error) {
     res.status(404).send(`error ${reqId}`);
   }
@@ -35,17 +33,21 @@ movieRouter.get("/movies", async (req, res) => {
   }
 });
 
-movieRouter.get("/movies-id", async (req: Request, res: Response): Promise<void> => {
-  console.log('static path generate');
+movieRouter.get(
+  "/movies-id",
+  async (req: Request, res: Response): Promise<void> => {
+    console.log("generating");
 
-  try {
-    const movie = await movieSch.find({}).limit(10).select({
-      _id: 1,
-    });
-    res.status(200).send(movie);
-  } catch (error) {
-    console.log(error, "in movie router")
+    try {
+      const movie = await movieSch.find({}).limit(10).select({
+        _id: 1,
+      });
+      res.status(200).send(movie);
+      console.log("movie", movie);
+    } catch (error) {
+      console.log(error, "in movie router");
+    }
   }
-})
+);
 
 export default movieRouter;

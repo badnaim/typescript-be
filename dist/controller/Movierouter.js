@@ -19,13 +19,11 @@ const movieRouter = express_1.default.Router();
 movieRouter.get(`/movie/:id`, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const reqId = (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id;
-    console.log("id", reqId);
+    console.log("reqId", reqId);
     try {
-        const movie = yield movie_model_1.default.find({ _id: reqId });
-        console.log("movie", movie);
-        if (movie) {
-            res.status(200).send(movie);
-        }
+        const findedMovie = yield movie_model_1.default.findOne({ _id: reqId });
+        console.log(findedMovie);
+        res.status(200).send(findedMovie);
     }
     catch (error) {
         res.status(404).send(`error ${reqId}`);
@@ -45,12 +43,13 @@ movieRouter.get("/movies", (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 }));
 movieRouter.get("/movies-id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('static path generate');
+    console.log("generating");
     try {
         const movie = yield movie_model_1.default.find({}).limit(10).select({
             _id: 1,
         });
         res.status(200).send(movie);
+        console.log("movie", movie);
     }
     catch (error) {
         console.log(error, "in movie router");
